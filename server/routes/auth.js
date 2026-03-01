@@ -111,4 +111,23 @@ router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 
+//added from here Rename Routes
+router.post('/rename', requireAuth, (req, res) => {
+  const { name } = req.body;
+  if (!name || typeof name !== 'string') return res.status(400).json({ error: 'Name required.' });
+  const trimmed = name.trim();
+  if (trimmed.length < 2)  return res.status(400).json({ error: 'Name must be at least 2 characters.' });
+  if (trimmed.length > 40) return res.status(400).json({ error: 'Name too long (max 40 characters).' });
+
+  try {
+    db().prepare('UPDATE users SET name = ? WHERE id = ?').run(trimmed, req.user.id);
+    const user = db().prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+    if (!user) return res.status(404).json({ error: 'User not found.' });
+    const token = signToken(user);
+    res.json({ ok: true, token, name: trimmed });
+  } catch (e) {
+    console.error('[rename]', e);
+    res.status(500).json({ error: 'Could not update name.' });
+  }
+});
 module.exports = router;

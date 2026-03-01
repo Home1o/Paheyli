@@ -30,20 +30,48 @@
 
 .branch-tree           { display: flex; flex-direction: column; gap: .75rem; }
 
+/* Base card */
 .branch-card           { background: #faf8f5; border: 1px solid #e8e2d9;
                           border-left: 3px solid #d4782e; border-radius: 6px;
                           padding: .85rem 1rem; }
-.branch-card.depth-1   { margin-left: 1.5rem; border-left-color: #8b7355; }
-.branch-card.depth-2   { margin-left: 3rem;   border-left-color: #a0998f; }
-.branch-card.depth-3   { margin-left: 4.5rem; border-left-color: #bdb5ac; }
+
+/* Depth indentation */
+.branch-card.depth-1   { margin-left: 1.5rem; }
+.branch-card.depth-2   { margin-left: 3rem; }
+.branch-card.depth-3   { margin-left: 4.5rem; }
+
+/* Branch-in (agree) — green tint */
+.branch-card.type-branch_in  { border-left-color: #4caf7d; background: #f4fbf7; }
+/* Branch-out (disagree) — red tint */
+.branch-card.type-branch_out { border-left-color: #e05252; background: #fdf5f5; }
+/* Root / plain branch */
+.branch-card.type-root,
+.branch-card.type-branch     { border-left-color: #d4782e; }
+
+/* Depth + type combined */
+.branch-card.depth-1.type-branch_in  { border-left-color: #4caf7d; }
+.branch-card.depth-1.type-branch_out { border-left-color: #e05252; }
+.branch-card.depth-2.type-branch_in  { border-left-color: #7ecfa0; }
+.branch-card.depth-2.type-branch_out { border-left-color: #e88080; }
+.branch-card.depth-3.type-branch_in  { border-left-color: #a8dfc0; }
+.branch-card.depth-3.type-branch_out { border-left-color: #efaaaa; }
+
+/* Type badge */
+.branch-type-badge     { display: inline-block; font-size: .7rem; font-weight: 600;
+                          padding: .1rem .45rem; border-radius: 20px; margin-left: .4rem;
+                          vertical-align: middle; }
+.badge-branch_in       { background: #d6f5e5; color: #267a4e; }
+.badge-branch_out      { background: #fde0e0; color: #b33030; }
 
 .branch-meta           { font-size: .78rem; color: #888; margin-bottom: .4rem; }
 .branch-meta strong    { color: #555; }
 .branch-text           { font-size: .92rem; color: #333; line-height: 1.55;
                           margin-bottom: .6rem; white-space: pre-wrap; }
 
-.branch-actions        { display: flex; align-items: center; gap: .75rem;
+.branch-actions        { display: flex; align-items: center; gap: .6rem;
                           flex-wrap: wrap; }
+
+/* Leaf (like) button */
 .btn-leaf              { display: inline-flex; align-items: center; gap: .3rem;
                           font-size: .8rem; padding: .3rem .75rem;
                           border: 1px solid #d4782e; border-radius: 20px;
@@ -53,18 +81,36 @@
 .btn-leaf:hover        { background: #d4782e; color: #fff; }
 .btn-leaf .leaf-count  { font-weight: 600; }
 
-.btn-reply             { font-size: .8rem; color: #888; background: none;
-                          border: none; cursor: pointer; padding: .3rem 0; }
-.btn-reply:hover       { color: #d4782e; }
+/* Branch-in / Branch-out reply buttons */
+.btn-branch-in,
+.btn-branch-out        { font-size: .8rem; padding: .3rem .75rem; border-radius: 20px;
+                          border: 1px solid; cursor: pointer; transition: all .15s;
+                          display: inline-flex; align-items: center; gap: .3rem; background: transparent; }
+.btn-branch-in         { border-color: #4caf7d; color: #4caf7d; }
+.btn-branch-in:hover   { background: #4caf7d; color: #fff; }
+.btn-branch-out        { border-color: #e05252; color: #e05252; }
+.btn-branch-out:hover  { background: #e05252; color: #fff; }
 
-.reply-form            { margin-top: .75rem; display: flex; gap: .5rem; }
+.branch-actions-sep    { width: 1px; height: 1.1rem; background: #ddd; }
+
+/* Reply forms */
+.reply-form            { margin-top: .75rem; display: none; flex-direction: column; gap: .4rem; }
+.reply-form.visible    { display: flex; }
+.reply-form-header     { font-size: .78rem; font-weight: 600; padding: .25rem 0; }
+.reply-form-header.in  { color: #267a4e; }
+.reply-form-header.out { color: #b33030; }
+.reply-form-row        { display: flex; gap: .5rem; }
 .reply-form textarea   { flex: 1; padding: .5rem .7rem; border: 1px solid #d1c9be;
                           border-radius: 6px; resize: vertical; min-height: 56px;
                           font-family: inherit; font-size: .85rem; }
-.reply-form button     { align-self: flex-end; padding: .45rem .9rem;
-                          background: #8b7355; color: #fff; border: none;
-                          border-radius: 6px; cursor: pointer; font-size: .85rem; }
-.reply-form button:hover { background: #6e5c43; }
+.reply-form button.submit-in  { align-self: flex-end; padding: .45rem .9rem; color: #fff;
+                                  background: #4caf7d; border: none; border-radius: 6px;
+                                  cursor: pointer; font-size: .85rem; white-space: nowrap; }
+.reply-form button.submit-in:hover  { background: #3a9466; }
+.reply-form button.submit-out { align-self: flex-end; padding: .45rem .9rem; color: #fff;
+                                  background: #e05252; border: none; border-radius: 6px;
+                                  cursor: pointer; font-size: .85rem; white-space: nowrap; }
+.reply-form button.submit-out:hover { background: #c03a3a; }
 
 .no-branches           { color: #999; font-size: .9rem; font-style: italic; }
 </style>
@@ -77,7 +123,7 @@
   <!-- Add top-level branch -->
   <div class="branch-form" id="root-branch-form">
     <textarea id="root-branch-text" placeholder="Add a branch to this discussion…" rows="2"></textarea>
-    <button onclick="submitBranch(null)">Add Branch</button>
+    <button onclick="submitBranch(null, 'root')">Add Branch</button>
   </div>
 
   <!-- Branch tree renders here -->
@@ -129,20 +175,39 @@ function renderBranchTree(branches, container) {
 }
 
 function buildBranchEl(branch) {
-  const depth  = Math.min(branch.depth || 0, 3);
-  const myEmail = getCurrentUserEmail();  // implement per your auth system
+  const depth    = Math.min(branch.depth || 0, 3);
+  const myEmail  = getCurrentUserEmail();
   const hasLeafed = myEmail && branch.leaves && branch.leaves.includes(myEmail);
+  const branchType = branch.type || 'branch';
+
+  // Type badge label
+  let typeBadge = '';
+  if (branchType === 'branch_in') {
+    typeBadge = `<span class="branch-type-badge badge-branch_in">🌿 Agrees</span>`;
+  } else if (branchType === 'branch_out') {
+    typeBadge = `<span class="branch-type-badge badge-branch_out">🍂 Disagrees</span>`;
+  }
 
   const card = document.createElement('div');
-  card.className = `branch-card depth-${depth}`;
+  card.className = `branch-card depth-${depth} type-${branchType}`;
   card.id = `branch-${branch.id}`;
 
   const time = branch.created_at
     ? new Date(branch.created_at * 1000).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
     : '';
 
+  const replyButtons = isLoggedIn() ? `
+    <span class="branch-actions-sep"></span>
+    <button class="btn-branch-in"  onclick="toggleReplyForm(${branch.id}, 'branch_in')"  title="Branch In — agree">🌿 Branch In</button>
+    <button class="btn-branch-out" onclick="toggleReplyForm(${branch.id}, 'branch_out')" title="Branch Out — disagree">🍂 Branch Out</button>
+  ` : '';
+
   card.innerHTML = `
-    <div class="branch-meta"><strong>${escHtml(branch.author)}</strong> · ${time}</div>
+    <div class="branch-meta">
+      <strong>${escHtml(branch.author)}</strong>
+      ${typeBadge}
+      · ${time}
+    </div>
     <div class="branch-text">${escHtml(branch.text)}</div>
     <div class="branch-actions">
       <button class="btn-leaf ${hasLeafed ? 'active' : ''}"
@@ -150,11 +215,25 @@ function buildBranchEl(branch) {
               title="${hasLeafed ? 'Remove leaf' : 'Add leaf'}">
         🍃 <span class="leaf-count">${(branch.leaves || []).length}</span>
       </button>
-      ${isLoggedIn() ? `<button class="btn-reply" onclick="toggleReplyForm(${branch.id})">↩ Reply</button>` : ''}
+      ${replyButtons}
     </div>
-    <div class="reply-form" id="reply-form-${branch.id}" style="display:none">
-      <textarea id="reply-text-${branch.id}" placeholder="Reply to this branch…" rows="2"></textarea>
-      <button onclick="submitBranch(${branch.id})">Reply</button>
+
+    <!-- Branch In form -->
+    <div class="reply-form" id="reply-form-${branch.id}-branch_in" data-branch-id="${branch.id}" data-type="branch_in">
+      <div class="reply-form-header in">🌿 Branch In — add an agreeing point</div>
+      <div class="reply-form-row">
+        <textarea id="reply-text-${branch.id}-branch_in" placeholder="Why you agree…" rows="2"></textarea>
+        <button class="submit-in" onclick="submitBranch(${branch.id}, 'branch_in')">Branch In</button>
+      </div>
+    </div>
+
+    <!-- Branch Out form -->
+    <div class="reply-form" id="reply-form-${branch.id}-branch_out" data-branch-id="${branch.id}" data-type="branch_out">
+      <div class="reply-form-header out">🍂 Branch Out — add a disagreeing point</div>
+      <div class="reply-form-row">
+        <textarea id="reply-text-${branch.id}-branch_out" placeholder="Why you disagree…" rows="2"></textarea>
+        <button class="submit-out" onclick="submitBranch(${branch.id}, 'branch_out')">Branch Out</button>
+      </div>
     </div>
   `;
 
@@ -170,37 +249,57 @@ function buildBranchEl(branch) {
 }
 
 // ── Toggle reply form ──────────────────────────────────────────
-function toggleReplyForm(branchId) {
-  const form = document.getElementById(`reply-form-${branchId}`);
+function toggleReplyForm(branchId, type) {
+  const formId = `reply-form-${branchId}-${type}`;
+  const form   = document.getElementById(formId);
   if (!form) return;
-  form.style.display = form.style.display === 'none' ? 'flex' : 'none';
-  if (form.style.display === 'flex') {
-    form.querySelector('textarea').focus();
+
+  // Close the OTHER form for this branch (can't have both open)
+  const otherType = type === 'branch_in' ? 'branch_out' : 'branch_in';
+  const otherForm = document.getElementById(`reply-form-${branchId}-${otherType}`);
+  if (otherForm) otherForm.classList.remove('visible');
+
+  const isOpen = form.classList.toggle('visible');
+  if (isOpen) {
+    const ta = form.querySelector('textarea');
+    if (ta) ta.focus();
   }
 }
 
 // ── Submit branch (root or reply) ──────────────────────────────
-async function submitBranch(parentBranchId) {
+async function submitBranch(parentBranchId, type) {
   if (!isLoggedIn()) { alert('Please log in to add a branch.'); return; }
 
-  const textareaId = parentBranchId ? `reply-text-${parentBranchId}` : 'root-branch-text';
-  const textarea   = document.getElementById(textareaId);
-  const text       = textarea.value.trim();
+  // Determine textarea id
+  let textareaId;
+  if (!parentBranchId) {
+    textareaId = 'root-branch-text';
+  } else {
+    textareaId = `reply-text-${parentBranchId}-${type}`;
+  }
+
+  const textarea = document.getElementById(textareaId);
+  if (!textarea) { console.error('Textarea not found:', textareaId); return; }
+  const text = textarea.value.trim();
   if (!text) { textarea.focus(); return; }
 
   try {
     const res = await fetch(`${API}/discussions/${DISCUSSION_ID}/branches`, {
       method: 'POST',
       headers: authHeaders(),
-      body: JSON.stringify({ text, parentBranchId: parentBranchId || undefined })
+      body: JSON.stringify({
+        text,
+        parentBranchId: parentBranchId || undefined,
+        type: type || 'root'
+      })
     });
     const data = await res.json();
     if (!res.ok) { alert(data.error || 'Could not add branch.'); return; }
 
     textarea.value = '';
     if (parentBranchId) {
-      const form = document.getElementById(`reply-form-${parentBranchId}`);
-      if (form) form.style.display = 'none';
+      const form = document.getElementById(`reply-form-${parentBranchId}-${type}`);
+      if (form) form.classList.remove('visible');
     }
     await loadBranches();   // re-fetch full tree so counts + nesting are correct
   } catch(e) {
@@ -238,8 +337,6 @@ function escHtml(str) {
 }
 
 // Returns the logged-in user's email — adapt to match your auth state.
-// If you store the decoded JWT in a global `currentUser`:
-//   function getCurrentUserEmail() { return currentUser?.email || null; }
 function getCurrentUserEmail() {
   try {
     const token = getToken();
