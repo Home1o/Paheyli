@@ -145,7 +145,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 
 .pc{padding:24px 0;border-bottom:1px solid var(--brd);cursor:pointer}
 .pc:hover .pc-title{color:var(--acc)}
-.pc-meta{font-size:.71rem;color:#c8b99a;display:flex;gap:9px;align-items:center;margin-bottom:7px;flex-wrap:wrap}
+.pc-meta{font-size:.71rem;color:var(--time-clr,#c8b99a);display:flex;gap:9px;align-items:center;margin-bottom:7px;flex-wrap:wrap}
 .tag{background:var(--surf2);color:var(--dim);padding:2px 7px;border-radius:2px;font-size:.66rem}
 .pc-title{font-family:var(--font-h);font-size:1.38rem;font-weight:700;line-height:1.2;margin-bottom:7px;color:var(--txt);transition:color .15s}
 .pc-exc{color:var(--dim);line-height:1.6;font-size:.91rem;margin-bottom:11px}
@@ -157,7 +157,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .back{background:none;border:none;cursor:pointer;font-family:var(--font-b);font-size:.82rem;color:var(--dim);display:flex;align-items:center;gap:5px;margin-bottom:22px;padding:0;transition:color .15s}
 .back:hover{color:var(--acc)}
 .pd-title{font-family:var(--font-h);font-size:1.9rem;font-weight:700;line-height:1.15;margin-bottom:13px;color:var(--txt)}
-.pd-meta{font-size:.73rem;color:#c8b99a;display:flex;gap:11px;flex-wrap:wrap;margin-bottom:26px;padding-bottom:17px;border-bottom:1px solid var(--brd)}
+.pd-meta{font-size:.73rem;color:var(--time-clr,#c8b99a);display:flex;gap:11px;flex-wrap:wrap;margin-bottom:26px;padding-bottom:17px;border-bottom:1px solid var(--brd)}
 .body-txt{font-size:1.02rem;line-height:1.85;color:var(--dim)}
 .body-txt p{margin-bottom:1.4em}
 .body-txt strong{color:var(--txt);font-weight:500}
@@ -963,7 +963,7 @@ function renderDiscList() {
     return '<div class="disc-card" onclick="openDisc('+d.id+')">'
       + '<div class="disc-card-head"><div class="disc-title-txt">'+san(d.title)+'</div>'
       + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'
-      + (d.body ? '<div class="disc-body-prev">'+san(d.body)+'<div style="margin-top:10px"><button class="vote-btn leaf-btn'+(d.leafed?' vu':'')+'" id="opening-leaf-btn" onclick="doDiscLeaf('+d.id+',this)" title="Endorse">\U0001f343 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves')+'</button></div></div>' : '')
+      + (d.body ? '<div class="disc-body-prev">'+san(d.body)+'</div>' : '')
       + '<div class="disc-footer"><span class="disc-meta-txt">by <strong style="color:var(--txt)">'+san(d.author)+'</strong> · '+fmtDate(d.created_at*1000)+'</span>'
       + tags + '<span style="font-size:.73rem;color:var(--dim);margin-left:auto">🌿 '+Math.max(0,branches-1)+' branches</span>'
       + '<button class="act'+(d.liked?' liked':'')+'" style="font-size:.73rem;padding:3px 9px" onclick="event.stopPropagation();doDiscLike('+d.id+',this)" title="Like this discussion">'+(d.liked?'❤️':'🤍')+' '+(d.like_count||0)+'</button>'
@@ -1037,7 +1037,7 @@ function buildDiscDetail(d) {
       + '</div>' : '';
 
   document.getElementById('disc-detail-inner').innerHTML =
-    '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px">'    + '<h1 class="d-title-h" style="flex:1">'+san(d.title)+'</h1>'    + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'    + (d.body ? '<div style="font-size:.97rem;line-height:1.7;color:var(--txt);margin:0 0 14px;padding:14px 16px;background:rgba(0,0,0,0.07);border-left:3px solid var(--acc);border-radius:0 8px 8px 0">'+san(d.body)+'</div>' : '')    + '<div class="d-meta-bar"><span>Started by <strong style="color:var(--txt)">'+san(d.author)+'</strong></span>'    + '<span>'+fmtDate(d.created_at*1000)+'</span>'    + (tags?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags+'</div>':'')    + adminActs + '</div>'    + '<div class="tree-hint">🌿 Branch In if you agree · 🌵 Branch Out if you disagree · 🍃 Add a leaf to endorse (+2 pts) · Branching from someone else gives them +5 pts</div>'
+    '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px">'    + '<h1 class="d-title-h" style="flex:1">'+san(d.title)+'</h1>'    + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'    + (d.body ? '<div style="font-size:.97rem;line-height:1.7;color:var(--txt);margin:0 0 14px;padding:14px 16px;background:rgba(0,0,0,0.07);border-left:3px solid var(--acc);border-radius:0 8px 8px 0">'+san(d.body)+'<div style="margin-top:10px"><button class="vote-btn leaf-btn'+(d.leafed?' vu':'')+'" id="opening-leaf-btn" onclick="doDiscLeaf('+d.id+',this)" title="Endorse opening statement">🍃 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves')+'</button></div></div>' : '')    + '<div class="d-meta-bar"><span>Started by <strong style="color:var(--txt)">'+san(d.author)+'</strong></span>'    + '<span>'+fmtDate(d.created_at*1000)+'</span>'    + (tags?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags+'</div>':'')    + adminActs + '</div>'    + '<div class="tree-hint">🌿 Branch In if you agree · 🌵 Branch Out if you disagree · 🍃 Add a leaf to endorse (+2 pts) · Branching from someone else gives them +5 pts</div>'
     + (open
       ? (user
         ? '<div class="new-branch-panel" id="new-branch-panel">'
@@ -1297,12 +1297,11 @@ function doDiscLeaf(discId, btn) {
         var leafed = r.data.leafed;
         return Object.assign({}, d, { leaf_count: r.data.leafCount, leafed: leafed });
       });
-      var lc=r.data.leafCount!=null?r.data.leafCount:0,lf=r.data.leafed;
-      var lh='\U0001f343 '+lc+' '+(lc===1?'leaf':'leaves'),lc2='vote-btn leaf-btn'+(lf?' vu':'');
-      if(btn){btn.innerHTML=lh;btn.className=lc2;}
-      var ob=document.getElementById('opening-leaf-btn');
-      if(ob&&ob!==btn){ob.innerHTML=lh;ob.className=lc2;}
-      if(currentDisc&&currentDisc.id==discId)currentDisc=Object.assign({},currentDisc,{leaf_count:lc,leafed:lf});
+      var d = allDiscs.find(function(x){ return x.id === discId; });
+      if (btn && d) {
+        btn.innerHTML = '🍃 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves');
+        btn.className = 'vote-btn leaf-btn' + (d.leafed ? ' vu' : '');
+      }
       renderAuth();
     });
 }
