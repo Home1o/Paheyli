@@ -21,14 +21,14 @@ var _curSection = 'blog';
 
 // ── Surface colours per section (light) ────────────────────────────────────
 var SECT_LIGHT = {
-  blog: {'--surf':'rgba(255,255,255,0.55)','--surf2':'rgba(235,255,190,0.60)','--surf3':'rgba(215,248,155,0.65)','--brd':'rgba(90,140,15,0.28)','--txt':'#192808','--dim':'#3d6010','--faint':'#80aa38','--acc':'#d94010','--acc2':'#f5a010','--red':'#c01808','--grn':'#3a8818','--blue':'#1060b0','--purple':'#7030b8','--shadow':'rgba(40,80,0,0.20)'},
-  disc: {'--surf':'rgba(255,255,255,0.55)','--surf2':'rgba(255,235,230,0.60)','--surf3':'rgba(255,215,210,0.65)','--brd':'rgba(200,80,60,0.25)','--txt':'#1a0810','--dim':'#8a2040','--faint':'#d490a0','--acc':'#e03020','--acc2':'#2848c8','--red':'#cc1010','--grn':'#1a8850','--blue':'#2848c8','--purple':'#9030c0','--shadow':'rgba(180,40,40,0.20)'}
+  blog: {'--surf':'rgba(255,255,255,0.55)','--surf2':'rgba(235,255,190,0.60)','--surf3':'rgba(215,248,155,0.65)','--brd':'rgba(90,140,15,0.28)','--txt':'#192808','--dim':'#3d6010','--faint':'#80aa38','--acc':'#d94010','--acc2':'#f5a010','--red':'#c01808','--grn':'#3a8818','--blue':'#1060b0','--purple':'#7030b8','--shadow':'rgba(40,80,0,0.20)','--time-clr':'#7a4030'},
+  disc: {'--surf':'rgba(255,255,255,0.55)','--surf2':'rgba(255,235,230,0.60)','--surf3':'rgba(255,215,210,0.65)','--brd':'rgba(200,80,60,0.25)','--txt':'#1a0810','--dim':'#8a2040','--faint':'#d490a0','--acc':'#e03020','--acc2':'#2848c8','--red':'#cc1010','--grn':'#1a8850','--blue':'#2848c8','--purple':'#9030c0','--shadow':'rgba(180,40,40,0.20)','--time-clr':'#7a4030'}
 };
 
 // ── Surface colours per section (dark) ─────────────────────────────────────
 var SECT_DARK = {
-  blog: {'--surf':'rgba(15,25,3,0.82)','--surf2':'rgba(22,36,5,0.85)','--surf3':'rgba(30,48,7,0.88)','--brd':'rgba(120,180,20,0.28)','--txt':'#e8dfc0','--dim':'#b8a880','--faint':'#3a5810','--acc':'#f06030','--acc2':'#f5c030','--red':'#ff3820','--grn':'#c8b880','--blue':'#38a0f0','--purple':'#c068ff','--shadow':'rgba(0,0,0,0.62)'},
-  disc: {'--surf':'rgba(35,8,18,0.84)','--surf2':'rgba(48,10,24,0.87)','--surf3':'rgba(60,12,30,0.90)','--brd':'rgba(220,80,80,0.25)','--txt':'#fdeef4','--dim':'#d090a8','--faint':'#6a2040','--acc':'#ff5040','--acc2':'#6080ff','--red':'#ff2020','--grn':'#c8b08a','--blue':'#6080ff','--purple':'#d060ff','--shadow':'rgba(0,0,0,0.68)'}
+  blog: {'--surf':'rgba(15,25,3,0.82)','--surf2':'rgba(22,36,5,0.85)','--surf3':'rgba(30,48,7,0.88)','--brd':'rgba(120,180,20,0.28)','--txt':'#e8fac0','--dim':'#98c050','--faint':'#3a5810','--acc':'#f06030','--acc2':'#f5c030','--red':'#ff3820','--grn':'#58d030','--blue':'#38a0f0','--purple':'#c068ff','--shadow':'rgba(0,0,0,0.62)','--time-clr':'#c8b098'},
+  disc: {'--surf':'rgba(35,8,18,0.84)','--surf2':'rgba(48,10,24,0.87)','--surf3':'rgba(60,12,30,0.90)','--brd':'rgba(220,80,80,0.25)','--txt':'#fdeef4','--dim':'#d090a8','--faint':'#6a2040','--acc':'#ff5040','--acc2':'#6080ff','--red':'#ff2020','--grn':'#40c880','--blue':'#6080ff','--purple':'#d060ff','--shadow':'rgba(0,0,0,0.68)','--time-clr':'#c8b098'}
 };
 
 // ── Legacy THEMES kept so nothing crashes ───────────────────────────────────
@@ -166,7 +166,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .cmt{padding:13px 0;border-bottom:1px solid var(--brd)}
 .cmt-hdr{display:flex;gap:9px;align-items:baseline;margin-bottom:4px;flex-wrap:wrap}
 .cmt-author{font-weight:500;font-size:.85rem;color:var(--txt)}
-.cmt-time{font-size:.71rem;color:var(--faint)}
+.cmt-time{font-size:.71rem;color:var(--time-clr,var(--dim))}
 .cmt-del{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--faint);font-size:.72rem;padding:0}
 .cmt-del:hover{color:var(--red)}
 .cmt-txt{color:var(--dim);line-height:1.6;font-size:.91rem}
@@ -195,7 +195,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .disc-status.closed{background:var(--surf3);color:var(--faint);border:1px solid var(--brd)}
 .disc-body-prev{font-size:.88rem;color:var(--dim);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .disc-footer{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.disc-meta-txt{font-size:.72rem;color:var(--faint)}
+.disc-meta-txt{font-size:.72rem;color:var(--time-clr,var(--dim))}
 .disc-tag-chip{background:var(--surf3);color:var(--dim);padding:2px 8px;border-radius:10px;font-size:.68rem;cursor:pointer;transition:all .15s}
 .disc-tag-chip:hover{background:var(--acc);color:#fff}
 
@@ -204,14 +204,14 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .tree-hint{font-size:.78rem;color:var(--dim);margin-bottom:16px;line-height:1.6;padding:10px 14px;background:var(--surf2);border-radius:4px;border-left:3px solid var(--acc)}
 
 .branch-node{margin-bottom:6px}
-.tree-container-wrap{padding-left:19px}.branch-indent{padding-left:20px;border-left:2px solid var(--brd);margin-left:14px;margin-top:6px}
+.branch-indent{padding-left:20px;border-left:2px solid var(--brd);margin-left:14px;margin-top:6px}
 .branch-indent:hover{border-left-color:var(--acc)}
 .branch-card{padding:13px 16px;background:var(--surf);border:1px solid var(--brd);border-radius:4px;margin-bottom:4px;transition:border-color .15s}
 .branch-card.root-branch{background:var(--surf2);border-left:3px solid var(--acc)}
 .branch-card.opinion-branch{border-left:3px solid var(--purple)}
 .branch-hdr{display:flex;align-items:center;gap:7px;margin-bottom:6px;flex-wrap:wrap}
 .branch-author-nm{font-weight:600;font-size:.82rem;color:var(--txt)}
-.branch-time-txt{font-size:.69rem;color:var(--faint)}
+.branch-time-txt{font-size:.69rem;color:var(--time-clr,var(--dim))}
 .branch-type-badge{font-size:.6rem;padding:1px 7px;border-radius:8px;text-transform:uppercase;letter-spacing:.05em}
 .btype-root{background:rgba(212,120,46,.2);color:var(--acc)}
 .btype-branch{background:rgba(74,159,212,.2);color:var(--blue)}
@@ -253,7 +253,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 
 .di-item:hover .di-ttl{color:var(--acc)}
 .di-ttl{font-size:.84rem;font-weight:500;color:var(--txt);margin-bottom:2px;transition:color .15s}
-.di-meta{font-size:.7rem;color:var(--faint)}
+.di-meta{font-size:.7rem;color:var(--time-clr,var(--dim))}
 .sr-item{padding:8px 0;border-bottom:1px solid var(--brd);cursor:pointer}
 .sr-item:hover .sr-title{color:var(--acc)}
 .sr-title{font-size:.85rem;font-weight:500;color:var(--txt);margin-bottom:2px;transition:color .15s}
@@ -370,7 +370,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
       <div id="disc-detail-view" class="page-disc" style="display:none">
         <button class="back" onclick="backToDiscList()">← All Discussions</button>
         <div id="disc-detail-inner"></div>
-        <div id="tree-container" class="tree-container-wrap"></div>
+        <div id="tree-container"></div>
       </div>
     </div>
 
@@ -554,12 +554,12 @@ function renderAuth() {
       var pts = 0;
       if (r.ok) { var me = r.data.find(function(x){ return x.name === user.name; }); if (me) pts = me.total; }
       el.innerHTML =
-        '<div style="font-size:.66rem;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px">Signed In</div>'
+        '<div style="font-size:.66rem;color:var(--time-clr,var(--dim));letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px">Signed In</div>'
         + '<div style="display:flex;flex-direction:column;gap:5px">'
         + '<div style="font-size:.92rem;font-weight:500;color:var(--txt)">'+san(user.name)+'</div>'
         + (user.isAdmin ? '<span style="font-size:.61rem;padding:2px 7px;background:var(--acc);color:#fff;border-radius:2px;text-transform:uppercase;align-self:flex-start">Admin</span>' : '')
         + (pts > 0 ? '<span class="pts-badge" style="align-self:flex-start">⭐ '+pts+' pts</span>' : '')
-        + '<div style="font-size:.73rem;color:var(--faint)">'+san(user.email)+'</div>'
+        + '<div style="font-size:.73rem;color:var(--time-clr,var(--dim))">'+san(user.email)+'</div>'
         + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'        + '<button class="btn btn-out btn-sm" onclick="openEditNameModal()">✏️ Name</button>'        + '<button class="btn btn-out btn-sm" onclick="doLogout()">Sign Out</button>'        + '</div>'        + '</div>';
     });
   } else {
@@ -963,7 +963,7 @@ function renderDiscList() {
     return '<div class="disc-card" onclick="openDisc('+d.id+')">'
       + '<div class="disc-card-head"><div class="disc-title-txt">'+san(d.title)+'</div>'
       + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'
-      + (d.body ? '<div class="disc-body-prev">'+san(d.body)+'</div>' : '')
+      + (d.body ? '<div class="disc-body-prev">'+san(d.body)+'<div style="margin-top:10px"><button class="vote-btn leaf-btn'+(d.leafed?' vu':'')+'" id="opening-leaf-btn" onclick="doDiscLeaf('+d.id+',this)" title="Endorse">\U0001f343 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves')+'</button></div></div>' : '')
       + '<div class="disc-footer"><span class="disc-meta-txt">by <strong style="color:var(--txt)">'+san(d.author)+'</strong> · '+fmtDate(d.created_at*1000)+'</span>'
       + tags + '<span style="font-size:.73rem;color:var(--dim);margin-left:auto">🌿 '+Math.max(0,branches-1)+' branches</span>'
       + '<button class="act'+(d.liked?' liked':'')+'" style="font-size:.73rem;padding:3px 9px" onclick="event.stopPropagation();doDiscLike('+d.id+',this)" title="Like this discussion">'+(d.liked?'❤️':'🤍')+' '+(d.like_count||0)+'</button>'
@@ -1037,7 +1037,7 @@ function buildDiscDetail(d) {
       + '</div>' : '';
 
   document.getElementById('disc-detail-inner').innerHTML =
-    '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px">'    + '<h1 class="d-title-h" style="flex:1">'+san(d.title)+'</h1>'    + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'    + (d.body ? '<div style="font-size:.97rem;line-height:1.7;color:var(--txt);margin:0 0 14px;padding:14px 16px;background:rgba(0,0,0,0.07);border-left:3px solid var(--acc);border-radius:0 8px 8px 0">'+san(d.body)+'</div>' : '')    + '<div class="d-meta-bar"><span>Started by <strong style="color:var(--txt)">'+san(d.author)+'</strong></span>'    + '<span>'+fmtDate(d.created_at*1000)+'</span>'    + (tags?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags+'</div>':'')    + adminActs + '</div>'    + '<div class="tree-hint">🌿 Branch In if you agree · 🔀 Branch Out if you disagree · 🍃 Add a leaf to endorse (+2 pts) · 🔀 Merge vote to unify · Branching from someone else gives them +5 pts</div>'
+    '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px">'    + '<h1 class="d-title-h" style="flex:1">'+san(d.title)+'</h1>'    + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'    + (d.body ? '<div style="font-size:.97rem;line-height:1.7;color:var(--txt);margin:0 0 14px;padding:14px 16px;background:rgba(0,0,0,0.07);border-left:3px solid var(--acc);border-radius:0 8px 8px 0">'+san(d.body)+'</div>' : '')    + '<div class="d-meta-bar"><span>Started by <strong style="color:var(--txt)">'+san(d.author)+'</strong></span>'    + '<span>'+fmtDate(d.created_at*1000)+'</span>'    + (tags?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags+'</div>':'')    + adminActs + '</div>'    + '<div class="tree-hint">🌿 Branch In if you agree · 🌵 Branch Out if you disagree · 🍃 Add a leaf to endorse (+2 pts) · Branching from someone else gives them +5 pts</div>'
     + (open
       ? (user
         ? '<div class="new-branch-panel" id="new-branch-panel">'
@@ -1049,7 +1049,7 @@ function buildDiscDetail(d) {
             + '<input type="hidden" id="new-branch-type" value="branch-in"/>'
             + '<div class="form-tabs" style="margin-bottom:10px">'
             + '<button class="ftab nbt active" data-type="branch-in" onclick="setNewBranchType(\'branch-in\')">🌿 Branch In — I agree</button>'
-            + '<button class="ftab nbt" data-type="branch-out" onclick="setNewBranchType(\'branch-out\')">🔀 Branch Out — I disagree</button>'
+            + '<button class="ftab nbt" data-type="branch-out" onclick="setNewBranchType(\'branch-out\')">🌵 Branch Out — I disagree</button>'
             + '</div>'
             + '<div class="fg" style="margin-top:2px"><textarea class="txa" id="txa-new-branch" placeholder="You agree — extend this thought…" style="min-height:80px"></textarea></div>'
             + '<div style="display:flex;gap:8px">'
@@ -1104,14 +1104,12 @@ function nestBranches(flat) {
   var topLevel = [];
   allBranches.forEach(function(b) {
     if (b.type === 'root') return; // skip root wrapper
-    // Use loose == comparison to handle string/number type mismatch from API
     var pid = b.parent_id;
-    var isTopLevel = !pid || pid == rootId || !map[pid] || (map[pid] && map[pid].type === 'root');
-    if (isTopLevel) {
-      // Direct reply to discussion → top level (flat, no indent)
+    if (!pid || pid === rootId || !map[pid]) {
+      // Direct reply to discussion → top level (flat)
       topLevel.push(map[b.id]);
     } else {
-      // Reply to a non-root branch → nest under parent
+      // Reply to a branch → nest under parent
       map[pid].children.push(map[b.id]);
     }
   });
@@ -1156,34 +1154,24 @@ function renderBranch(b, disc, user, admin, indented) {
   // 🍃 Leaf + ❤️ Like buttons
   if (!user) {
     card += '<button class="vote-btn leaf-btn" onclick="openAuthModal(\'login\')" title="Sign in to add a leaf">🍃 '+leafCount+(leafCount===1?' leaf':' leaves')+'</button>';
-    card += '<button class="act" onclick="openAuthModal(\'login\')" title="Sign in to like">🤍 0</button>';
   } else if (isOwnBranch) {
     card += '<span class="vote-btn leaf-btn" style="cursor:default;opacity:.5" title="You cannot leaf your own branch">🍃 '+leafCount+(leafCount===1?' leaf':' leaves')+'</span>';
-    card += '<span class="act" style="cursor:default;opacity:.5">🤍 0</span>';
   } else {
     card += '<button class="vote-btn leaf-btn'+(hasLeafed?' vu':'')+'" onclick="doLeaf('+disc.id+','+b.id+')" title="'+(hasLeafed?'Remove leaf':'Add leaf — +2 pts to author')+'">'
       + '🍃 '+(hasLeafed?'Leafed':'Add Leaf')+(leafCount>0?' ('+leafCount+')':'')+'</button>';
-    var bLiked = b.liked || false;
-    var bLikes = b.like_count || 0;
-    card += '<button class="act'+(bLiked?' liked':'')+'" id="blk-'+b.id+'" onclick="doBranchLike('+disc.id+','+b.id+')" title="Like this branch">'+(bLiked?'❤️':'🤍')+' '+bLikes+'</button>';
   }
 
-  // 🔀 Merge vote
-  if (b.type !== 'root') {
-    card += '<button class="vote-btn'+(hasMerged?' vm':'')+'" onclick="doMerge('+disc.id+','+b.id+')" title="Vote to merge back to main thread">🔀 Merge'+(mc>0?' ('+mc+')':'')+'</button>';
-    if (mc >= 3) card += '<span class="merge-badge">✓ Merge requested</span>';
-  }
 
   // Branch In / Branch Out button
   if (open) {
     card += !user
       ? '<button class="act-btn" onclick="openAuthModal(\'login\')">+ Branch</button>'
-      : '<button class="act-btn" onclick="toggleInlineForm('+disc.id+','+b.id+')">🌿 Branch In / 🔀 Branch Out</button>';
+      : '<button class="act-btn" style="background:var(--surf2);border-color:var(--brd);color:var(--dim)" onclick="toggleInlineForm('+disc.id+','+b.id+')">🌿 Branch In / 🌵 Branch Out</button>';
   }
 
   // Author or admin delete (not on root)
   if ((isOwnBranch || admin) && b.type !== 'root') {
-    card += '<button class="act-btn" style="color:var(--red);border-color:var(--red)" onclick="doDeleteBranch('+disc.id+','+b.id+')">✕ Delete</button>';
+    card += '<button class="act-btn" style="background:var(--surf2);border-color:var(--brd);color:var(--dim)" onclick="doDeleteBranch('+disc.id+','+b.id+')">✕ Delete</button>';
   }
 
   card += '</div>';
@@ -1210,7 +1198,7 @@ function buildInlineForm(disc, pb) {
   var type = openFormIds[pb.id] || 'branch';
   return '<div class="form-tabs">'
     + '<button class="ftab'+(type==='branch'?' active':'')+'" onclick="setFormType('+disc.id+','+pb.id+',\'branch\')">🌿 Branch In — I agree</button>'
-    + '<button class="ftab'+(type==='opinion'?' active':'')+'" onclick="setFormType('+disc.id+','+pb.id+',\'opinion\')">🔀 Branch Out — I disagree</button>'
+    + '<button class="ftab'+(type==='opinion'?' active':'')+'" onclick="setFormType('+disc.id+','+pb.id+',\'opinion\')">🌵 Branch Out — I disagree</button>'
     + '</div>'
     + '<div class="fg"><textarea class="txa" id="txa-'+pb.id+'" placeholder="'
       + (type==='opinion'?'You disagree — share your counter-perspective…':'You agree — extend this thread of thought…')
@@ -1243,11 +1231,9 @@ function submitTopLevelBranch(discId) {
   var btype = (document.getElementById('new-branch-type') || {}).value || 'branch';
   // Map branch-in/branch-out to API types
   var apiType = (btype === 'branch-out') ? 'opinion' : 'branch';
-  // Find the root-type branch — new branches should be children of root (= top-level, no indent)
-  var _allBr = currentDisc ? (currentDisc.branches || []) : [];
-  function _flat(list) { var o=[]; list.forEach(function(b){ o.push(b); if(b.children) o=o.concat(_flat(b.children)); }); return o; }
-  var _rootBr = _flat(_allBr).find(function(b){ return b.type === 'root'; });
-  var parentId = _rootBr ? _rootBr.id : null;
+  // Use the root branch as parent if available, otherwise null (API will handle top-level)
+  var parentId = (currentDisc && currentDisc.branches && currentDisc.branches.length)
+    ? currentDisc.branches[0].id : null;
   apiPost('/api/discussions/' + discId + '/branches', { parentBranchId: parentId, text: text, type: apiType })
     .then(function(r) {
       if (!r.ok) return toast(r.data.error || 'Could not post branch.');
@@ -1311,11 +1297,12 @@ function doDiscLeaf(discId, btn) {
         var leafed = r.data.leafed;
         return Object.assign({}, d, { leaf_count: r.data.leafCount, leafed: leafed });
       });
-      var d = allDiscs.find(function(x){ return x.id === discId; });
-      if (btn && d) {
-        btn.innerHTML = '🍃 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves');
-        btn.className = 'vote-btn leaf-btn' + (d.leafed ? ' vu' : '');
-      }
+      var lc=r.data.leafCount!=null?r.data.leafCount:0,lf=r.data.leafed;
+      var lh='\U0001f343 '+lc+' '+(lc===1?'leaf':'leaves'),lc2='vote-btn leaf-btn'+(lf?' vu':'');
+      if(btn){btn.innerHTML=lh;btn.className=lc2;}
+      var ob=document.getElementById('opening-leaf-btn');
+      if(ob&&ob!==btn){ob.innerHTML=lh;ob.className=lc2;}
+      if(currentDisc&&currentDisc.id==discId)currentDisc=Object.assign({},currentDisc,{leaf_count:lc,leafed:lf});
       renderAuth();
     });
 }
