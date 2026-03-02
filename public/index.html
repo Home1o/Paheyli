@@ -27,8 +27,8 @@ var SECT_LIGHT = {
 
 // ── Surface colours per section (dark) ─────────────────────────────────────
 var SECT_DARK = {
-  blog: {'--surf':'rgba(15,25,3,0.82)','--surf2':'rgba(22,36,5,0.85)','--surf3':'rgba(30,48,7,0.88)','--brd':'rgba(120,180,20,0.28)','--txt':'#e8fac0','--dim':'#98c050','--faint':'#3a5810','--acc':'#f06030','--acc2':'#f5c030','--red':'#ff3820','--grn':'#58d030','--blue':'#38a0f0','--purple':'#c068ff','--shadow':'rgba(0,0,0,0.62)'},
-  disc: {'--surf':'rgba(35,8,18,0.84)','--surf2':'rgba(48,10,24,0.87)','--surf3':'rgba(60,12,30,0.90)','--brd':'rgba(220,80,80,0.25)','--txt':'#fdeef4','--dim':'#d090a8','--faint':'#6a2040','--acc':'#ff5040','--acc2':'#6080ff','--red':'#ff2020','--grn':'#40c880','--blue':'#6080ff','--purple':'#d060ff','--shadow':'rgba(0,0,0,0.68)'}
+  blog: {'--surf':'rgba(15,25,3,0.82)','--surf2':'rgba(22,36,5,0.85)','--surf3':'rgba(30,48,7,0.88)','--brd':'rgba(120,180,20,0.28)','--txt':'#e8dfc0','--dim':'#b8a880','--faint':'#3a5810','--acc':'#f06030','--acc2':'#f5c030','--red':'#ff3820','--grn':'#c8b880','--blue':'#38a0f0','--purple':'#c068ff','--shadow':'rgba(0,0,0,0.62)'},
+  disc: {'--surf':'rgba(35,8,18,0.84)','--surf2':'rgba(48,10,24,0.87)','--surf3':'rgba(60,12,30,0.90)','--brd':'rgba(220,80,80,0.25)','--txt':'#fdeef4','--dim':'#d090a8','--faint':'#6a2040','--acc':'#ff5040','--acc2':'#6080ff','--red':'#ff2020','--grn':'#c8b08a','--blue':'#6080ff','--purple':'#d060ff','--shadow':'rgba(0,0,0,0.68)'}
 };
 
 // ── Legacy THEMES kept so nothing crashes ───────────────────────────────────
@@ -204,7 +204,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .tree-hint{font-size:.78rem;color:var(--dim);margin-bottom:16px;line-height:1.6;padding:10px 14px;background:var(--surf2);border-radius:4px;border-left:3px solid var(--acc)}
 
 .branch-node{margin-bottom:6px}
-.branch-indent{padding-left:20px;border-left:2px solid var(--brd);margin-left:14px;margin-top:6px}
+.tree-container-wrap{padding-left:19px}.branch-indent{padding-left:20px;border-left:2px solid var(--brd);margin-left:14px;margin-top:6px}
 .branch-indent:hover{border-left-color:var(--acc)}
 .branch-card{padding:13px 16px;background:var(--surf);border:1px solid var(--brd);border-radius:4px;margin-bottom:4px;transition:border-color .15s}
 .branch-card.root-branch{background:var(--surf2);border-left:3px solid var(--acc)}
@@ -370,7 +370,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
       <div id="disc-detail-view" class="page-disc" style="display:none">
         <button class="back" onclick="backToDiscList()">← All Discussions</button>
         <div id="disc-detail-inner"></div>
-        <div id="tree-container"></div>
+        <div id="tree-container" class="tree-container-wrap"></div>
       </div>
     </div>
 
@@ -1104,12 +1104,14 @@ function nestBranches(flat) {
   var topLevel = [];
   allBranches.forEach(function(b) {
     if (b.type === 'root') return; // skip root wrapper
+    // Use loose == comparison to handle string/number type mismatch from API
     var pid = b.parent_id;
-    if (!pid || pid === rootId || !map[pid]) {
-      // Direct reply to discussion → top level (flat)
+    var isTopLevel = !pid || pid == rootId || !map[pid] || (map[pid] && map[pid].type === 'root');
+    if (isTopLevel) {
+      // Direct reply to discussion → top level (flat, no indent)
       topLevel.push(map[b.id]);
     } else {
-      // Reply to a branch → nest under parent
+      // Reply to a non-root branch → nest under parent
       map[pid].children.push(map[b.id]);
     }
   });
@@ -1241,9 +1243,11 @@ function submitTopLevelBranch(discId) {
   var btype = (document.getElementById('new-branch-type') || {}).value || 'branch';
   // Map branch-in/branch-out to API types
   var apiType = (btype === 'branch-out') ? 'opinion' : 'branch';
-  // Use the root branch as parent if available, otherwise null (API will handle top-level)
-  var parentId = (currentDisc && currentDisc.branches && currentDisc.branches.length)
-    ? currentDisc.branches[0].id : null;
+  // Find the root-type branch — new branches should be children of root (= top-level, no indent)
+  var _allBr = currentDisc ? (currentDisc.branches || []) : [];
+  function _flat(list) { var o=[]; list.forEach(function(b){ o.push(b); if(b.children) o=o.concat(_flat(b.children)); }); return o; }
+  var _rootBr = _flat(_allBr).find(function(b){ return b.type === 'root'; });
+  var parentId = _rootBr ? _rootBr.id : null;
   apiPost('/api/discussions/' + discId + '/branches', { parentBranchId: parentId, text: text, type: apiType })
     .then(function(r) {
       if (!r.ok) return toast(r.data.error || 'Could not post branch.');
