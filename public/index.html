@@ -608,7 +608,13 @@ function doEditName() {
     if(!r.ok){errEl.textContent=r.data.error||'Could not update name.';return;}
     var user=getUser(); user.name=newName; saveUser(user);
     if(r.data&&r.data.token) localStorage.setItem('mg:token',r.data.token);
-    closeAuthModal(); toast('Name updated ✓'); renderAuth();
+    closeAuthModal(); toast('Name updated ✓');
+    renderAuth(); renderAdminBtn();
+    loadPosts();
+    loadDiscPanel();
+    if(document.getElementById('disc-list-el')) loadDiscussions();
+    if(curPost) reloadCurrentPost();
+    if(currentDisc) loadDiscDetail(currentDisc.id);
   });
 }
 function doLogout() {
@@ -942,11 +948,14 @@ function doDeletePost(id) {
 var allDiscs = [];
 
 function loadDiscussions() {
-  var q   = (document.getElementById('disc-srch').value||'').trim();
+  var srch = document.getElementById('disc-srch');
+  var listEl = document.getElementById('disc-list-el');
+  if (!srch || !listEl) return;
+  var q   = (srch.value||'').trim();
   var qs  = activeTag ? '?tag=' + encodeURIComponent(activeTag) : (q.length >= 2 ? '?q=' + encodeURIComponent(q) : '');
-  document.getElementById('disc-list-el').innerHTML = '<p class="loading">Loading…</p>';
+  listEl.innerHTML = '<p class="loading">Loading…</p>';
   apiGet('/api/discussions' + qs).then(function(r) {
-    if (!r.ok) { document.getElementById('disc-list-el').innerHTML = '<p class="empty">Could not load.</p>'; return; }
+    if (!r.ok) { listEl.innerHTML = '<p class="empty">Could not load.</p>'; return; }
     allDiscs = r.data;
     renderDiscList();
     renderTagsBar();

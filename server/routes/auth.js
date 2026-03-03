@@ -9,7 +9,6 @@ const { sendOTPEmail } = require('../mailer');
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'admin@themargin.com').toLowerCase();
 const ADMIN_PASS  =  process.env.ADMIN_PASSWORD || 'Admin@Margin2025!';
 
-// Access db lazily so it's always the initialised instance
 function db() { return dbModule.db; }
 
 function generateOTP() {
@@ -111,7 +110,7 @@ router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 
-//added from here Rename Routes
+// Rename — DEBUG VERSION with full logging
 router.post('/rename', requireAuth, (req, res) => {
   const { name } = req.body;
   if (!name || typeof name !== 'string') return res.status(400).json({ error: 'Name required.' });
@@ -120,14 +119,42 @@ router.post('/rename', requireAuth, (req, res) => {
   if (trimmed.length > 40) return res.status(400).json({ error: 'Name too long (max 40 characters).' });
 
   try {
-    db().prepare('UPDATE users SET name = ? WHERE id = ?').run(trimmed, req.user.id);
-    const user = db().prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
-    if (!user) return res.status(404).json({ error: 'User not found.' });
-    const token = signToken(user);
-    res.json({ ok: true, token, name: trimmed });
+    const oldUser = db().prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+    if (!oldUser) return res.status(404).json({ error: 'User not found.' });
+    const oldName   = oldUser.name;
+    const userEmail = oldUser.email.toLowerCase();
+
+    console.log('[rename] ---- START ----');
+    console.log('[rename] id:', req.user.id, '| oldName:', oldName, '| newName:', trimmed, '| email:', userEmail);
+
+    const r1 = db().prepare('UPDATE users SET name = ? WHERE id = ?').run(trimmed, req.user.id);
+    console.log('[rename] users rows changed:', r1.changes);
+
+    const r2 = db().prepare('UPDATE comments SET author = ? WHERE author_email = ?').run(trimmed, userEmail);
+    console.log('[rename] comments rows changed:', r2.changes);
+
+    const r3 = db().prepare('UPDATE discussions SET author = ? WHERE author_email = ?').run(trimmed, userEmail);
+    console.log('[rename] discussions rows changed:', r3.changes);
+
+    const r4 = db().prepare('UPDATE branches SET author = ? WHERE author_email = ?').run(trimmed, userEmail);
+    console.log('[rename] branches rows changed:', r4.changes);
+
+    const r5 = db().prepare('UPDATE points SET user_name = ?, user_email = ? WHERE user_name = ?').run(trimmed, userEmail, oldName);
+    console.log('[rename] points rows changed:', r5.changes);
+
+    const r6 = db().prepare('UPDATE leaves SET user_name = ? WHERE user_email = ?').run(trimmed, userEmail);
+    console.log('[rename] leaves rows changed:', r6.changes);
+
+    // Verify user name was saved
+    const updatedUser = db().prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+    console.log('[rename] verify — DB now has name:', updatedUser && updatedUser.name);
+    console.log('[rename] ---- END ----');
+
+    res.json({ ok: true, token: signToken(updatedUser), name: trimmed });
   } catch (e) {
-    console.error('[rename]', e);
+    console.error('[rename] ERROR:', e.message);
     res.status(500).json({ error: 'Could not update name.' });
   }
 });
+
 module.exports = router;

@@ -86,8 +86,8 @@ const dbReady = require('sql.js')().then(SQL => {
       PRIMARY KEY (branch_id, user_email))`,
     `CREATE TABLE IF NOT EXISTS points (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_name TEXT NOT NULL, amount INTEGER NOT NULL,
-      reason TEXT NOT NULL,
+      user_name TEXT NOT NULL, user_email TEXT NOT NULL DEFAULT '',
+      amount INTEGER NOT NULL, reason TEXT NOT NULL,
       created_at INTEGER NOT NULL DEFAULT (strftime('%s','now')))`
   ];
   tables.forEach(t => sqlDb.exec(t));
@@ -104,6 +104,11 @@ const dbReady = require('sql.js')().then(SQL => {
     `CREATE INDEX IF NOT EXISTS idx_points_user     ON points(user_name)`
   ];
   indexes.forEach(i => sqlDb.exec(i));
+
+  // ─── MIGRATIONS ────────────────────────────────────────────────────────────
+  // Add user_email to points if it doesn't exist yet (safe to run every boot)
+  try { sqlDb.exec(`ALTER TABLE points ADD COLUMN user_email TEXT NOT NULL DEFAULT ''`); } catch(_) {}
+
   persist();
 
   // ─── prepare() shim ────────────────────────────────────────────────────────
@@ -179,9 +184,15 @@ function getUserPoints(userName) {
   const row = state.db.prepare(`SELECT COALESCE(SUM(amount),0) AS total FROM points WHERE user_name=?`).get(userName);
   return row ? row.total : 0;
 }
-function addPoints(userName, amount, reason) {
+function addPoints(userName, amount, reason, userEmail) {
   if (!userName || userName === 'Admin' || amount === 0) return;
-  state.db.prepare(`INSERT INTO points (user_name,amount,reason) VALUES (?,?,?)`).run(userName, amount, reason);
+  const email = (userEmail || '').toLowerCase();
+  try {
+    state.db.prepare(`INSERT INTO points (user_name,user_email,amount,reason) VALUES (?,?,?,?)`).run(userName, email, amount, reason);
+  } catch(_) {
+    // Fallback for old schema without user_email column
+    state.db.prepare(`INSERT INTO points (user_name,amount,reason) VALUES (?,?,?)`).run(userName, amount, reason);
+  }
 }
 function getLeafEmails(branchId) {
   return state.db.prepare(`SELECT user_email FROM leaves WHERE branch_id=?`).all(branchId).map(r => r.user_email);
@@ -202,7 +213,18 @@ function buildBranchTree(discussionId, parentId) {
   }));
 }
 function getLeaderboard() {
-  return state.db.prepare(`SELECT user_name AS name, SUM(amount) AS total FROM points GROUP BY user_name ORDER BY total DESC LIMIT 10`).all();
+  // Group by email when available so renamed users appear as one entry with their current name.
+  // Fall back to user_name grouping for legacy rows that have no email yet.
+  return state.db.prepare(`
+    SELECT
+      COALESCE(u.name, p.user_name) AS name,
+      SUM(p.amount) AS total
+    FROM points p
+    LEFT JOIN users u ON u.email = p.user_email AND p.user_email != ''
+    GROUP BY CASE WHEN p.user_email != '' THEN p.user_email ELSE p.user_name END
+    ORDER BY total DESC
+    LIMIT 10
+  `).all();
 }
 
 module.exports = {
