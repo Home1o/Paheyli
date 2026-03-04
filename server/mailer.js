@@ -1,20 +1,15 @@
 'use strict';
 
 async function sendOTPEmail(email, code) {
-  // ALWAYS log OTP to console first — visible in Render logs no matter what
+  // ALWAYS log OTP — visible in Render logs
   console.log('========================================');
   console.log(`OTP FOR: ${email}`);
   console.log(`CODE:    ${code}`);
   console.log('========================================');
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+  const { SMTP_USER, SMTP_PASS } = process.env;
 
-  console.log('[mailer] SMTP_HOST:', SMTP_HOST || 'NOT SET');
-  console.log('[mailer] SMTP_PORT:', SMTP_PORT || 'NOT SET');
-  console.log('[mailer] SMTP_USER:', SMTP_USER || 'NOT SET');
-  console.log('[mailer] SMTP_PASS:', SMTP_PASS ? `SET (${SMTP_PASS.length} chars)` : 'NOT SET');
-
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+  if (!SMTP_USER || !SMTP_PASS) {
     console.log('[mailer] SMTP not configured — OTP only in logs above.');
     return;
   }
@@ -22,16 +17,14 @@ async function sendOTPEmail(email, code) {
   try {
     const nodemailer = require('nodemailer');
 
+    // Try port 465 (SSL) first — more likely to work on Render
     const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: parseInt(SMTP_PORT) || 587,
-      secure: parseInt(SMTP_PORT) === 465,
-      auth: { user: SMTP_USER, pass: SMTP_PASS }
+      service: 'gmail',   // lets nodemailer auto-configure Gmail settings
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS   // 16-char app password
+      }
     });
-
-    console.log('[mailer] Verifying SMTP connection...');
-    await transporter.verify();
-    console.log('[mailer] SMTP connection OK');
 
     await transporter.sendMail({
       from:    `"The Margin" <${SMTP_USER}>`,
@@ -54,8 +47,6 @@ async function sendOTPEmail(email, code) {
 
   } catch (err) {
     console.error('[mailer] SMTP FAILED:', err.message);
-    console.error('[mailer] Full error:', err);
-    // Don't rethrow — OTP is already logged above, registration should still succeed
   }
 }
 
