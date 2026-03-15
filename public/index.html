@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5CXSR4MZN4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5CXSR4MZN4');
+</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Paheyli</title>
@@ -178,7 +187,6 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .body-txt h1{font-family:var(--font-h);font-size:1.6rem;font-weight:700;color:var(--txt);margin:1.8em 0 0.6em;line-height:1.2}
 .body-txt h2{font-family:var(--font-h);font-size:1.3rem;font-weight:700;color:var(--txt);margin:1.6em 0 0.5em;line-height:1.25}
 .body-txt h3{font-family:var(--font-h);font-size:1.1rem;font-weight:600;color:var(--txt);margin:1.4em 0 0.4em}
-.body-txt h4{font-family:var(--font-h);font-size:1rem;font-weight:600;color:var(--txt);margin:1.2em 0 0.4em}
 .body-txt ul,.body-txt ol{margin:0 0 1.4em 1.5em;padding:0}
 .body-txt ul{list-style:disc}
 .body-txt ol{list-style:decimal}
@@ -187,14 +195,9 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .body-txt blockquote p{margin-bottom:0}
 .body-txt code{font-family:monospace;font-size:0.88em;background:var(--surf);padding:2px 6px;border-radius:4px;color:var(--acc)}
 .body-txt pre{background:var(--surf);border:1px solid var(--brd);border-radius:8px;padding:1.1em 1.3em;overflow-x:auto;margin:1.4em 0}
-.body-txt pre code{background:none;padding:0;font-size:0.9em;color:var(--txt)}
 .body-txt a{color:var(--acc);text-decoration:underline;text-underline-offset:3px}
-.body-txt a:hover{opacity:0.8}
 .body-txt hr{border:none;border-top:1px solid var(--brd);margin:2em 0}
 .body-txt img{max-width:100%;border-radius:8px;margin:1em 0}
-.body-txt table{width:100%;border-collapse:collapse;margin:1.4em 0;font-size:.92rem}
-.body-txt th{background:var(--surf);font-weight:600;color:var(--txt);padding:8px 12px;border:1px solid var(--brd);text-align:left}
-.body-txt td{padding:8px 12px;border:1px solid var(--brd);color:var(--dim)}
 .act-bar{margin:26px 0 20px;padding:15px 0;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .sec-h{font-family:var(--font-h);font-size:1.08rem;margin-bottom:16px;color:var(--txt)}
 .cmt{padding:13px 0;border-bottom:1px solid var(--brd)}
@@ -298,7 +301,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .modal{background:var(--surf);border:1px solid var(--brd);border-radius:5px;padding:26px;width:100%;max-width:420px;max-height:92vh;overflow-y:auto}
 .modal-h{font-family:var(--font-h);font-size:1.25rem;color:var(--txt);margin-bottom:18px}
 .modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:16px;padding-top:13px;border-top:1px solid var(--brd)}
-.post-modal-inner{max-width:780px}
+.post-modal-inner{max-width:560px}
 .otp-inp{width:100%;font-family:monospace;font-size:1.8rem;letter-spacing:.3em;text-align:center;background:var(--surf2);border:2px solid var(--acc);color:var(--acc);padding:14px;border-radius:4px;font-weight:700}
 .otp-inp:focus{outline:none}
 
@@ -343,7 +346,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .site-footer{text-align:center;padding:18px 20px;font-size:.75rem;color:var(--dim);border-top:1px solid var(--brd);background:var(--surf);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin-top:auto;position:relative;z-index:1}
 .site-footer a{color:var(--acc);text-decoration:none}
 .site-footer a:hover{text-decoration:underline}
-/* ── Quill editor overrides ── */
+.post-modal-inner{max-width:780px!important}
 .ql-toolbar{background:var(--surf)!important;border:1px solid var(--brd)!important;border-bottom:none!important;border-radius:6px 6px 0 0!important;flex-wrap:wrap}
 .ql-container{border:1px solid var(--brd)!important;border-radius:0 0 6px 6px!important;font-family:var(--font-b)!important;font-size:1rem!important;background:var(--bg)!important;min-height:220px}
 .ql-editor{color:var(--txt)!important;min-height:220px;line-height:1.8}
@@ -352,7 +355,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
 .ql-snow .ql-fill{fill:var(--dim)!important}
 .ql-snow .ql-picker{color:var(--dim)!important}
 .ql-snow .ql-picker-options{background:var(--surf)!important;border-color:var(--brd)!important}
-.ql-snow.ql-toolbar button:hover .ql-stroke,.ql-snow .ql-toolbar button:hover .ql-stroke{stroke:var(--acc)!important}
+.ql-snow.ql-toolbar button:hover .ql-stroke{stroke:var(--acc)!important}
 .ql-snow.ql-toolbar button.ql-active .ql-stroke{stroke:var(--acc)!important}
 .ql-snow.ql-toolbar button.ql-active .ql-fill{fill:var(--acc)!important}
 </style>
@@ -397,7 +400,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
             <input id="disc-srch" placeholder="Search…" oninput="renderDiscList()"/>
           </div>
           <button class="btn btn-acc" onclick="openNewDiscForm()">+ Start Discussion</button>
-          <button class="ctrl-btn" onclick="openLeaderboard()" title="Leaderboard" style="display:none">🏆</button>
+          <!-- <button class="ctrl-btn" onclick="openLeaderboard()" title="Leaderboard" style="display:none">🏆</button> -->
         </div>
         <div class="tags-bar" id="disc-tags-bar"></div>
         <div id="new-disc-form" class="new-disc-form">
@@ -450,7 +453,7 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
     <div class="fg"><label class="fl">Title *</label><input class="mf" id="f-title" placeholder="Essay title…"/></div>
     <div class="fg"><label class="fl">Excerpt</label><input class="mf" id="f-exc" placeholder="Short preview…"/></div>
     <div class="fg"><label class="fl">Content *</label>
-      <div id="quill-editor" style="min-height:260px;font-family:var(--font-b);font-size:1rem;background:var(--bg);border:1px solid var(--brd);border-radius:6px"></div>
+      <div id="quill-editor" style="min-height:260px"></div>
       <textarea id="f-body" style="display:none"></textarea>
     </div>
     <div class="fg"><label class="fl">Tags (comma separated)</label><input class="mf" id="f-tags" placeholder="culture, philosophy"/></div>
@@ -468,8 +471,8 @@ body{background-color:#c5e86b;background-size:100% auto;background-position:cent
   <div class="modal"><div id="auth-modal-body"></div></div>
 </div>
 
-<!-- LEADERBOARD MODAL (hidden) -->
-<div class="overlay" id="lb-modal" onclick="if(event.target===this)closeLbModal()" style="display:none">
+<!-- LEADERBOARD MODAL -->
+<div class="overlay" id="lb-modal" onclick="if(event.target===this)closeLbModal()">
   <div class="modal" style="max-width:440px">
     <div style="font-family:var(--font-h);font-size:1.2rem;color:var(--txt);margin-bottom:12px">🏆 Points Leaderboard</div>
     <div style="font-size:.78rem;color:var(--dim);margin-bottom:14px;line-height:1.5">Earn points when others branch from your posts or add leaves to your branches.</div>
@@ -605,15 +608,19 @@ function renderAuth() {
       + '<div style="font-size:.92rem;font-weight:500;color:var(--txt)">'+san(user.name)+'</div>'
       + (user.isAdmin ? '<span style="font-size:.61rem;padding:2px 7px;background:var(--acc);color:#fff;border-radius:2px;text-transform:uppercase;align-self:flex-start">Admin</span>' : '')
       + '<div style="font-size:.73rem;color:var(--time-clr,var(--dim))">'+san(user.email)+'</div>'
-      + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'      + '<button class="btn btn-out btn-sm" onclick="openEditNameModal()">✏️ Name</button>'      + '<button class="btn btn-out btn-sm" onclick="doLogout()">Sign Out</button>'      + '<button class="btn btn-red btn-sm" onclick="confirmDeleteAccount()" style="margin-top:4px;width:100%">🗑 Delete Account</button>'      + '</div>'      + '</div>';
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'
+      + '<button class="btn btn-out btn-sm" onclick="openEditNameModal()">✏️ Name</button>'
+      + '<button class="btn btn-out btn-sm" onclick="doLogout()">Sign Out</button>'
+      + '<button class="btn btn-red btn-sm" onclick="confirmDeleteAccount()" style="margin-top:4px;width:100%">🗑 Delete Account</button>'
+      + '</div></div>';
   } else {
     el.innerHTML =
       '<div style="font-family:var(--font-h);font-size:.9rem;margin-bottom:12px">Sign In</div>'
-      + '<div class="fg"><label class="fl">Email</label><input class="inp" id="li-em" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doSidebarLogin()"/></div>'
-      + '<div class="fg"><label class="fl">Password</label><input class="inp" id="li-pw" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doSidebarLogin()"/></div>'
+      + '<div class="fg"><label class="fl">Email</label><input class="inp" id="li-em" type="email" placeholder="your@email.com" onkeydown="if(event.key===\'Enter\')doSidebarLogin()"/></div>'
+      + '<div class="fg"><label class="fl">Password</label><input class="inp" id="li-pw" type="password" placeholder="Password" onkeydown="if(event.key===\'Enter\')doSidebarLogin()"/></div>'
       + '<div id="li-err" class="err-msg"></div>'
       + '<button class="btn btn-acc" style="margin-top:8px;width:100%;justify-content:center" onclick="doSidebarLogin()">Sign In</button>'
-      + '<div class="auth-sw">No account? <button class="btn-link" onclick="openAuthModal('register')">Register →</button></div>';
+      + '<div class="auth-sw">No account? <button class="btn-link" onclick="openAuthModal(\'register\')">Register →</button></div>';
   }
 }
 
@@ -668,25 +675,17 @@ function doLogout() {
   if (curPost) reloadCurrentPost();
   if (currentDisc) loadDiscDetail(currentDisc.id);
 }
-
 function confirmDeleteAccount() {
-  customConfirm(
-    '⚠️ Delete your account? This will permanently remove your account and all your data. This cannot be undone.',
-    'Delete Account',
-    function() { doDeleteAccount(); }
-  );
+  customConfirm('⚠️ Delete your account? This permanently removes your account and all your data.',
+    'Delete Account', function() { doDeleteAccount(); });
 }
-
 function doDeleteAccount() {
   apiPost('/api/auth/delete-account', {}).then(function(r) {
-    if (!r.ok) { toast('Could not delete account: ' + (r.data.error || 'Unknown error')); return; }
-    clearToken();
-    toast('Account deleted.');
-    renderAuth(); renderAdminBtn();
-    loadPosts(); loadDiscPanel();
+    if (!r.ok) { toast('Could not delete: ' + (r.data.error||'error')); return; }
+    clearToken(); toast('Account deleted.');
+    renderAuth(); renderAdminBtn(); loadPosts(); loadDiscPanel();
     if (document.getElementById('disc-list-el')) loadDiscussions();
-    curPost = null; currentDisc = null;
-    showBlogList();
+    curPost = null; currentDisc = null; showBlogList();
   });
 }
 
@@ -756,17 +755,15 @@ function doModalRegister() {
   var em = (document.getElementById('m-em').value||'').trim();
   var pw = (document.getElementById('m-pw').value||'').trim();
   var errEl = document.getElementById('m-err');
-  // Client-side validation
   if (!nm) { errEl.textContent = 'Name is required.'; return; }
   if (!em)  { errEl.textContent = 'Email is required.'; return; }
   if (!pw || pw.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; return; }
   errEl.textContent = '';
-  // Show loading state
   var btn = document.querySelector('#auth-modal-body .btn-acc');
   if (btn) { btn.disabled = true; btn.textContent = 'Please wait…'; }
   apiPost('/api/auth/register', { name: nm, email: em, password: pw }).then(function(r) {
     if (btn) { btn.disabled = false; btn.textContent = 'Continue →'; }
-    if (!r.ok) { errEl.textContent = r.data.error || 'Registration failed. Please try again.'; return; }
+    if (!r.ok) { errEl.textContent = r.data.error || 'Registration failed.'; return; }
     renderOTPModal(em);
   });
 }
@@ -958,41 +955,37 @@ function doSearch(q) {
 }
 
 /* ── POST ADMIN MODAL ── */
-// ── Quill editor init ──
 var quill = null;
 function getQuill() {
   if (!quill) {
     quill = new Quill('#quill-editor', {
       theme: 'snow',
       placeholder: 'Write your essay here…',
-      modules: {
-        toolbar: [
-          [{ header: [1, 2, 3, false] }],
-          [{ font: [] }],
-          [{ size: ['small', false, 'large', 'huge'] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ color: [] }, { background: [] }],
-          [{ align: [] }],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['blockquote', 'code-block'],
-          ['link'],
-          ['clean']
-        ]
-      }
+      modules: { toolbar: [
+        [{ header: [1,2,3,false] }],
+        [{ font: [] }],
+        [{ size: ['small',false,'large','huge'] }],
+        ['bold','italic','underline','strike'],
+        [{ color: [] },{ background: [] }],
+        [{ align: [] }],
+        [{ list: 'ordered' },{ list: 'bullet' }],
+        ['blockquote','code-block'],
+        ['link'],
+        ['clean']
+      ]}
     });
   }
   return quill;
 }
-
 function openNewPostModal() {
   document.getElementById('post-modal-h').textContent = 'New Essay';
   document.getElementById('edit-id').value = '';
-  ['f-title','f-exc','f-tags'].forEach(function(id){ document.getElementById(id).value = ''; });
+  ['f-title','f-exc','f-tags'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('f-rt').value = '3';
   document.getElementById('post-modal-err').textContent = '';
   document.getElementById('post-modal-sub').textContent = 'Publish';
   document.getElementById('post-modal').classList.add('open');
-  setTimeout(function(){ getQuill().setContents([]); }, 50);
+  setTimeout(function(){ getQuill().setContents([]); }, 80);
 }
 function openEditPostModal(id) {
   var p = allPosts.find(function(x){ return x.id === id; });
@@ -1009,30 +1002,24 @@ function openEditPostModal(id) {
   document.getElementById('post-modal').classList.add('open');
   setTimeout(function(){
     var q = getQuill();
-    // If content is HTML, load it directly; if plain text convert to paragraphs
-    if (/<[a-z][\s\S]*>/i.test(p.content)) {
-      q.root.innerHTML = p.content;
-    } else {
-      q.root.innerHTML = formatContent(p.content);
-    }
-  }, 50);
+    if (/<[a-z][\s\S]*>/i.test(p.content)) { q.root.innerHTML = p.content; }
+    else { q.root.innerHTML = formatContent(p.content); }
+  }, 80);
 }
 function closePostModal() { document.getElementById('post-modal').classList.remove('open'); }
-
 function submitPost() {
   var id    = document.getElementById('edit-id').value;
   var title = (document.getElementById('f-title').value||'').trim();
   var errEl = document.getElementById('post-modal-err');
   if (!title) { errEl.textContent = 'Title is required.'; return; }
-  // Get HTML content from Quill
   var q = getQuill();
   var content = q.root.innerHTML.trim();
   if (!content || content === '<p><br></p>') { errEl.textContent = 'Content is required.'; return; }
   errEl.textContent = '';
   var body = { title: title, content: content,
-    excerpt: document.getElementById('f-exc').value,
-    tags:    document.getElementById('f-tags').value,
-    readTime:document.getElementById('f-rt').value };
+    excerpt: (document.getElementById('f-exc').value||'').trim(),
+    tags:    (document.getElementById('f-tags').value||'').trim(),
+    readTime:(document.getElementById('f-rt').value||3) };
   var req = id ? apiPut('/api/posts/' + id, body) : apiPost('/api/posts', body);
   req.then(function(r) {
     if (!r.ok) { errEl.textContent = r.data.error || 'Could not save.'; return; }
@@ -1042,7 +1029,6 @@ function submitPost() {
     else { showBlogList(); loadPosts(); }
   });
 }
-
 
 function doDeletePost(id) {
   customConfirm('Delete this essay?', '🗑 Delete', function() {
@@ -1159,7 +1145,8 @@ function buildDiscDetail(d) {
       + '</div>' : '';
 
   document.getElementById('disc-detail-inner').innerHTML =
-    '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px">'    + '<h1 class="d-title-h" style="flex:1">'+san(d.title)+'</h1>'    + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'    + (d.body ? '<div style="font-size:.97rem;line-height:1.7;color:var(--txt);margin:0 0 14px;padding:14px 16px;background:rgba(0,0,0,0.07);border-left:3px solid var(--acc);border-radius:0 8px 8px 0">'+san(d.body)+'<div style="margin-top:10px"><button class="vote-btn leaf-btn'+(d.leafed?' vu':'')+'" id="opening-leaf-btn" onclick="doDiscLeaf('+d.id+',this)" title="Endorse opening statement">🍃 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves')+'</button></div></div>' : '')    + '<div class="d-meta-bar"><span>Started by <strong style="color:var(--txt)">'+san(d.author)+'</strong></span>'    + '<span>'+fmtDate(d.created_at*1000)+'</span>'    + (tags?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags+'</div>':'')    + adminActs + '</div>'    + '<div class="tree-hint">🌿 Branch In if you agree · 🌵 Branch Out if you disagree · 🍃 Add a leaf to endorse (+2 pts) · Branching from someone else gives them +5 pts</div>'
+    '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px">'    + '<h1 class="d-title-h" style="flex:1">'+san(d.title)+'</h1>'    + '<span class="disc-status '+(open?'open':'closed')+'">'+(open?'Open':'Closed')+'</span></div>'    + (d.body ? '<div style="font-size:.97rem;line-height:1.7;color:var(--txt);margin:0 0 14px;padding:14px 16px;background:rgba(0,0,0,0.07);border-left:3px solid var(--acc);border-radius:0 8px 8px 0">'+san(d.body)+'<div style="margin-top:10px"><button class="vote-btn leaf-btn'+(d.leafed?' vu':'')+'" id="opening-leaf-btn" onclick="doDiscLeaf('+d.id+',this)" title="Endorse opening statement">🍃 '+(d.leaf_count||0)+' '+((d.leaf_count||0)===1?'leaf':'leaves')+'</button></div></div>' : '')    + '<div class="d-meta-bar"><span>Started by <strong style="color:var(--txt)">'+san(d.author)+'</strong></span>'    + '<span>'+fmtDate(d.created_at*1000)+'</span>'    + (tags?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags+'</div>':'')    + adminActs + '</div>'    + '<div class="tree-hint">🍃 Add a leaf to endorse · 🌿 Branch In if you agree · 🌵 Branch Out if you disagree </div>'
+    /* (+2 pts) · Branching from someone else gives them +5 pts*/
     + (open
       ? (user
         ? '<div class="new-branch-panel" id="new-branch-panel">'
