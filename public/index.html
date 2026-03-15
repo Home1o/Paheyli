@@ -98,6 +98,14 @@ function apiDel(path){ return apiFetch(path, { method: 'DELETE' }); }
 
 /* ═══════ UTILS ══════════════════════════════════════════════════════════════ */
 function san(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function formatContent(c) {
+  if (!c) return '';
+  if (/<[a-z][\s\S]*>/i.test(c)) return c;
+  return c.split(/\n\n+/).map(function(para){
+    var t=para.trim(); if(!t) return '';
+    return '<p>'+t.replace(/\n/g,'<br>')+'</p>';
+  }).filter(Boolean).join('');
+}
 function dec(s){ return String(s||'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'"); }
 function fmtDate(ts){ return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
 function ago(ts){
@@ -854,7 +862,7 @@ function buildPostDetail(p) {
   document.getElementById('detail-body').innerHTML =
     '<div class="pd-meta"><span>'+fmtDate(p.createdAt)+'</span>·<span>'+p.readTime+' min</span>'+tags+'</div>'
     + '<h1 class="pd-title">'+san(p.title)+'</h1>'
-    + '<div class="body-txt">'+p.content+'</div>'
+    + '<div class="body-txt">'+formatContent(p.content)+'</div>'
     + '<div class="act-bar">'
       + '<button class="act'+(liked?' liked':'')+'" id="like-btn" onclick="doLike('+p.id+')">'
         + (liked?'❤️':'🤍')+' <span id="like-ct">'+p.likes.length+'</span></button>'
