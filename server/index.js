@@ -54,19 +54,3 @@ dbReady.then(() => {
   process.exit(1);
 });
 
-import { createClient } from "@libsql/client";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-// Add this route 👇
-app.get("/api/health", async (req, res) => {
-  try {
-    await client.execute("SELECT 1");
-    res.status(200).json({ status: "✅ Turso is working" });
-  } catch (e) {
-    res.status(500).json({ status: "❌ Failed", error: e.message });
-  }
-});
