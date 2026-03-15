@@ -2,7 +2,6 @@
 
 const { createClient } = require('@libsql/client');
 
-// Uses Turso when env vars set, falls back to local SQLite for dev
 const client = createClient(
   process.env.TURSO_URL && process.env.TURSO_TOKEN
     ? { url: process.env.TURSO_URL, authToken: process.env.TURSO_TOKEN }
@@ -84,32 +83,25 @@ const indexes = [
   `CREATE INDEX IF NOT EXISTS idx_points_user     ON points(user_name)`
 ];
 
-// prepare() shim — mimics better-sqlite3 sync API using deasync to block on Turso async calls
+// ─── Async prepare() shim ─────────────────────────────────────────────────────
+// Returns an object with async get/all/run methods that match better-sqlite3 API
+// All route handlers must await these calls
 function prepare(sql) {
-  function runSync(params) {
-    let result, error;
-    client.execute({ sql, args: params })
-      .then(r => { result = r; })
-      .catch(e => { error = e; });
-    require('deasync').loopWhile(() => result === undefined && error === undefined);
-    if (error) { console.error('[db]', sql, error.message); throw error; }
-    return result;
-  }
   return {
-    get(...args) {
+    async get(...args) {
       const params = args.flat().map(v => v === undefined ? null : v);
-      const r = runSync(params);
+      const r = await client.execute({ sql, args: params });
       if (!r.rows.length) return undefined;
       return Object.fromEntries(Object.keys(r.rows[0]).map(k => [k, r.rows[0][k]]));
     },
-    all(...args) {
+    async all(...args) {
       const params = args.flat().map(v => v === undefined ? null : v);
-      const r = runSync(params);
+      const r = await client.execute({ sql, args: params });
       return r.rows.map(row => Object.fromEntries(Object.keys(row).map(k => [k, row[k]])));
     },
-    run(...args) {
+    async run(...args) {
       const params = args.flat().map(v => v === undefined ? null : v);
-      const r = runSync(params);
+      const r = await client.execute({ sql, args: params });
       return { lastInsertRowid: Number(r.lastInsertRowid), changes: r.rowsAffected };
     }
   };
@@ -121,57 +113,63 @@ const dbReady = (async () => {
     for (const i of indexes) await client.execute(i);
     state.db = { prepare };
 
-    const { rows } = await client.execute('SELECT COUNT(*) AS n FROM posts');
-    if (Number(rows[0].n) === 0) {
+    const r = await client.execute('SELECT COUNT(*) AS n FROM posts');
+    if (Number(r.rows[0].n) === 0) {
       console.log('[db] Seeding initial posts...');
       const now = Math.floor(Date.now() / 1000);
       await client.batch([
         { sql: `INSERT INTO posts (title,excerpt,content,tags,read_time,created_at) VALUES (?,?,?,?,?,?)`,
           args: ['Welcome to The Margin','A space for ideas that live between disciplines.',
-            '<p>Welcome to <strong>The Margin</strong>.</p>',JSON.stringify(['welcome','meta']),2,now-172800] },
+            '<p>Welcome to <strong>The Margin</strong> — a place for ideas that do not fit neatly anywhere else.</p>',
+            JSON.stringify(['welcome','meta']),2,now-172800] },
         { sql: `INSERT INTO posts (title,excerpt,content,tags,read_time,created_at) VALUES (?,?,?,?,?,?)`,
           args: ['The Attention Economy and Why You Feel Exhausted','Every app is optimised to capture your attention.',
-            '<p>Your attention is finite.</p>',JSON.stringify(['technology','culture']),4,now-86400] },
+            '<p>Your attention is finite. Every platform is optimised to take as much of it as possible.</p>',
+            JSON.stringify(['technology','culture']),4,now-86400] },
         { sql: `INSERT INTO posts (title,excerpt,content,tags,read_time,created_at) VALUES (?,?,?,?,?,?)`,
           args: ['On Slowness as a Competitive Advantage','In a world optimised for speed, moving deliberately has become rare.',
-            '<p>Speed is celebrated everywhere.</p>',JSON.stringify(['philosophy','productivity']),3,now-43200] }
+            '<p>Speed is celebrated everywhere. But the most durable work is built slowly.</p>',
+            JSON.stringify(['philosophy','productivity']),3,now-43200] }
       ]);
       console.log('[db] Seed complete.');
     }
     console.log('[db] Ready', process.env.TURSO_URL ? '(Turso cloud)' : '(local SQLite)');
     return state.db;
   } catch(e) {
-    console.error('[db] Failed to initialise database:', e);
+    console.error('[db] Failed to initialise:', e);
     throw e;
   }
 })();
 
-function getUserPoints(userName) {
-  const row = state.db.prepare(`SELECT COALESCE(SUM(amount),0) AS total FROM points WHERE user_name=?`).get(userName);
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+async function getUserPoints(userName) {
+  const row = await state.db.prepare(`SELECT COALESCE(SUM(amount),0) AS total FROM points WHERE user_name=?`).get(userName);
   return row ? row.total : 0;
 }
-function addPoints(userName, amount, reason) {
+async function addPoints(userName, amount, reason) {
   if (!userName || userName === 'Admin' || amount === 0) return;
-  state.db.prepare(`INSERT INTO points (user_name,amount,reason) VALUES (?,?,?)`).run(userName, amount, reason);
+  await state.db.prepare(`INSERT INTO points (user_name,amount,reason) VALUES (?,?,?)`).run(userName, amount, reason);
 }
-function getLeafEmails(branchId) {
-  return state.db.prepare(`SELECT user_email FROM leaves WHERE branch_id=?`).all(branchId).map(r => r.user_email);
+async function getLeafEmails(branchId) {
+  const rows = await state.db.prepare(`SELECT user_email FROM leaves WHERE branch_id=?`).all(branchId);
+  return rows.map(r => r.user_email);
 }
-function getMergeVoters(branchId) {
-  return state.db.prepare(`SELECT user_email FROM merge_votes WHERE branch_id=?`).all(branchId).map(r => r.user_email);
+async function getMergeVoters(branchId) {
+  const rows = await state.db.prepare(`SELECT user_email FROM merge_votes WHERE branch_id=?`).all(branchId);
+  return rows.map(r => r.user_email);
 }
-function buildBranchTree(discussionId, parentId) {
+async function buildBranchTree(discussionId, parentId) {
   const rows = parentId == null
-    ? state.db.prepare(`SELECT * FROM branches WHERE discussion_id=? AND parent_id IS NULL ORDER BY created_at ASC`).all(discussionId)
-    : state.db.prepare(`SELECT * FROM branches WHERE discussion_id=? AND parent_id=? ORDER BY created_at ASC`).all(discussionId, parentId);
-  return rows.map(b => ({
+    ? await state.db.prepare(`SELECT * FROM branches WHERE discussion_id=? AND parent_id IS NULL ORDER BY created_at ASC`).all(discussionId)
+    : await state.db.prepare(`SELECT * FROM branches WHERE discussion_id=? AND parent_id=? ORDER BY created_at ASC`).all(discussionId, parentId);
+  return Promise.all(rows.map(async b => ({
     ...b,
-    leaves:     getLeafEmails(b.id),
-    mergeVotes: getMergeVoters(b.id),
-    children:   buildBranchTree(b.discussion_id, b.id)
-  }));
+    leaves:     await getLeafEmails(b.id),
+    mergeVotes: await getMergeVoters(b.id),
+    children:   await buildBranchTree(b.discussion_id, b.id)
+  })));
 }
-function getLeaderboard() {
+async function getLeaderboard() {
   return state.db.prepare(`SELECT user_name AS name, SUM(amount) AS total FROM points GROUP BY user_name ORDER BY total DESC LIMIT 10`).all();
 }
 
