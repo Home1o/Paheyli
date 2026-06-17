@@ -1,20 +1,23 @@
 /* Calendar styles — ported from Cadence, namespaced so they never collide
-   with Paheyli's own CSS. The whole feature lives under #cal-root. */
+   with Paheyli's own CSS. The whole feature lives under #cal-root.
+   Colours derive from Paheyli's live theme tokens (--acc, --surf, --txt …)
+   set by applyBg(), so the calendar automatically matches the active section
+   palette and follows light/dark mode like every other part of the site. */
 #cal-root{
-  --cal-accent:#5b4bdb;
-  --cal-ink:#1c1b22; --cal-sub:#6b6976; --cal-line:#e7e4ec;
-  --cal-card:rgba(255,255,255,.82); --cal-card-solid:#fff;
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  --cal-accent:var(--acc,#d94010);
+  --cal-ink:var(--txt,#192808);
+  --cal-sub:var(--dim,#3d6010);
+  --cal-line:var(--brd,rgba(90,140,15,0.28));
+  --cal-card:var(--surf,rgba(255,255,255,.55));
+  --cal-card-solid:var(--surf2,rgba(235,255,190,0.60));
+  font-family:var(--font-b,'Inter',system-ui,-apple-system,sans-serif);
   color:var(--cal-ink);
   display:flex;flex-direction:column;min-height:calc(100vh - 54px);
-  background:linear-gradient(135deg,#ede9fe 0%,#f5f3ff 50%,#faf5ff 100%);
-  border-radius:18px;overflow:hidden;border:1.5px solid var(--cal-line);
-  margin:18px auto;max-width:1280px;box-shadow:0 8px 48px rgba(0,0,0,.10);
-}
-[data-theme="dark"] #cal-root{
-  --cal-ink:#e8e8f0;--cal-sub:#a5a3b8;--cal-line:rgba(255,255,255,.14);
-  --cal-card:rgba(30,27,75,.55);--cal-card-solid:#262150;
-  background:linear-gradient(135deg,#1e1b4b 0%,#312e81 55%,#1e3a8a 100%);
+  background:var(--surf,rgba(255,255,255,.55));
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-radius:20px;overflow:hidden;border:1.5px solid var(--cal-line);
+  margin:24px auto;max-width:1280px;box-shadow:0 8px 48px var(--shadow,rgba(40,80,0,0.20));
+  transition:background .3s,border-color .3s,color .3s;
 }
 #cal-root *{box-sizing:border-box}
 #cal-root button{font-family:inherit;cursor:pointer}
@@ -174,7 +177,8 @@
 .cal-strip .cal-pip.today{background:transparent;border:1.5px dashed var(--cal-accent)}
 
 .cal-overlay{position:fixed;inset:0;background:rgba(20,18,30,.5);display:flex;align-items:center;justify-content:center;padding:18px;z-index:300;backdrop-filter:blur(3px)}
-.cal-modal{background:var(--cal-card-solid);border-radius:18px;width:100%;max-width:480px;padding:22px;max-height:92vh;overflow:auto;box-shadow:0 24px 70px rgba(0,0,0,.3);border:1px solid var(--cal-line)}
+.cal-modal{background:#fff;border-radius:18px;width:100%;max-width:480px;padding:22px;max-height:92vh;overflow:auto;box-shadow:0 24px 70px rgba(0,0,0,.3);border:1px solid var(--cal-line)}
+[data-theme="dark"] .cal-modal{background:#161e08}
 .cal-modal.small{max-width:400px}
 .cal-m-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .cal-m-top h2{font-size:19px;margin:0;font-weight:700}
